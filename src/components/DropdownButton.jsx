@@ -4,13 +4,13 @@ import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 
 const Btn = styled.div`
+  height: 100%;
   display: flex;
   align-items: center;
-  width: fit-content;
   padding: 1rem;
   background-color: white;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 5px 0 rgb(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   cursor: pointer;
   .toggle-icon {
     display: flex;
@@ -20,7 +20,7 @@ const Btn = styled.div`
   }
 
   &.button-open {
-    outline: #ffc8c8 2px solid;
+    outline: var(--hover-color) 2px solid;
   }
 `;
 

@@ -1,43 +1,67 @@
 import React from "react";
 import CourseOption from "./CourseOption";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const CourseWrapper = styled.div`
-  width: 50%;
   margin-right: 10px;
+  display: flex;
+  flex-direction: column;
+
+  .input-container {
+    height: 12%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .search-icon {
+    position: absolute;
+    margin: 0px 8% 0px 3%;
+  }
   // "type course here" input
   .course-input {
+    height: 100%;
     width: 100%;
-    padding-left: 5px;
-
     outline: none;
     border: none;
-    box-shadow: 0 2px 5px 0 rgb(0, 0, 0, 0.1);
-    padding: 1rem;
+    box-shadow: var(--box-shadow);
+    padding-left: 8%;
     background-color: white;
     border-radius: 0.5rem;
   }
 
   // list that contains all course options
   .course-container {
+    flex: 1;
     width: 100%;
     list-style-type: none;
     overflow-y: scroll;
-    max-height: 50vh;
+    //height: calc(100% - 20px);
   }
 `;
 
-export const CourseSearch = ({ formData, handleChange, courses }) => {
+export const CourseSearch = ({
+  formData,
+  handleChange,
+  courses,
+  className,
+}) => {
   return (
-    <CourseWrapper>
-      <input
-        className="course-input"
-        type="text"
-        placeholder="Type course here"
-        name="courseName"
-        value={formData.courseName}
-        onChange={handleChange}
-      />
+    <CourseWrapper className={`${className}`}>
+      <div className="input-container">
+        <FontAwesomeIcon className="search-icon" icon={faMagnifyingGlass} />
+        <input
+          className="course-input"
+          type="text"
+          placeholder="Type course here"
+          name="courseName"
+          value={formData.courseName}
+          onChange={handleChange}
+        />
+      </div>
 
       {/* Course options */}
 

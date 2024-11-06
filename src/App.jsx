@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CourseOption from "./components/CourseOption.jsx";
 import AddCourse from "./pages/addcourse/AddCourse.jsx";
+import Header from "./components/Header.jsx";
 function App() {
   const [formData, setFormData] = useState({
     courseName: "",
@@ -40,12 +41,16 @@ function App() {
     {
       path: "/",
       element: (
-        <Search
-          formData={formData}
-          setFormKey={setFormKey}
-          handleChange={handleChange}
-          handleSubmit={handleSubmit}
-        />
+        <>
+          <Header />
+
+          <Search
+            formData={formData}
+            setFormKey={setFormKey}
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+          />
+        </>
       ),
     },
     {

@@ -22,7 +22,7 @@ const ContentWrapper = styled.div`
     transform: translateY(-5%);
 
     pointer-events: none; // so when -10px up, you can still click select term
-    box-shadow: 0 2px 5px 0 rgb(0, 0, 0, 0.1);
+    box-shadow: var(--box-shadow);
 
     overflow-y: scroll;
   }

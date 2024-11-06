@@ -6,9 +6,9 @@ import styled from "styled-components";
 
 const Div = styled.div`
   position: relative;
-  height: fit-content; // so top:100% works, fit's content to size of button
+  z-index: 1000;
 `;
-const Dropdown = ({ buttonText, content }) => {
+const Dropdown = ({ buttonText, content, children, className }) => {
   const [open, setOpen] = useState(false);
   const [dropdownTop, setDropdownTop] = useState(0);
   const dropdownRef = useRef();
@@ -42,13 +42,15 @@ const Dropdown = ({ buttonText, content }) => {
   }, [dropdownRef]);
 
   return (
-    <Div ref={dropdownRef}>
+    <Div className={`${className}`} ref={dropdownRef}>
       <DropdownButton ref={buttonRef} toggle={toggleDropdown} open={open}>
         {buttonText}
       </DropdownButton>
       <DropdownContent top={dropdownTop} ref={contentRef} open={open}>
         {content}
       </DropdownContent>
+
+      {children}
     </Div>
   );
 };

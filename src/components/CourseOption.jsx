@@ -8,10 +8,14 @@ const Button = styled.button`
   background-color: white;
   outline: none;
   border: none;
-  box-shadow: 0 1px 5px 0 rgb(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 0px 0px rgb(0, 0, 0, 0.1);
   padding: 1rem;
-  margin: 0.1rem 0;
+  margin-bottom: 3px;
   border-radius: 0.5rem;
+
+  &:hover {
+    background-color: var(--hover-color);
+  }
 `;
 
 export default function CourseOption(props) {
