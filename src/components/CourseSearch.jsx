@@ -64,7 +64,6 @@ export const CourseSearch = ({
       </div>
 
       {/* Course options */}
-
       <ul className="course-container">
         {courses.map((courseData, index) => {
           const courseName = formData.courseName.toLowerCase();
