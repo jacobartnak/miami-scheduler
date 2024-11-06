@@ -10,11 +10,15 @@ const CourseWrapper = styled.div`
   flex-direction: column;
 
   .input-container {
-    height: 12%;
+    height: 14%;
     position: relative;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+
+    input {
+      font-weight: 100;
+    }
   }
 
   .search-icon {
@@ -23,6 +27,7 @@ const CourseWrapper = styled.div`
   }
   // "type course here" input
   .course-input {
+    color: var(--light-black);
     height: 100%;
     width: 100%;
     outline: none;
@@ -30,7 +35,7 @@ const CourseWrapper = styled.div`
     box-shadow: var(--box-shadow);
     padding-left: 8%;
     background-color: white;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
   }
 
   // list that contains all course options
@@ -39,6 +44,9 @@ const CourseWrapper = styled.div`
     width: 100%;
     list-style-type: none;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
     //height: calc(100% - 20px);
   }
 `;
@@ -48,7 +56,15 @@ export const CourseSearch = ({
   handleChange,
   courses,
   className,
+  setSelectedCourse,
 }) => {
+  const handleCourseSelect = (data) => {
+    setSelectedCourse(() => {
+      console.log(data);
+      setSelectedCourse(data);
+    });
+  };
+
   return (
     <CourseWrapper className={`${className}`}>
       <div className="input-container">
@@ -93,7 +109,13 @@ export const CourseSearch = ({
 
             // Return CourseOption if any of the matches are true
             if (isMatch) {
-              return <CourseOption key={index} courseData={courseData} />;
+              return (
+                <CourseOption
+                  handleCourseSelect={handleCourseSelect}
+                  key={index}
+                  courseData={courseData}
+                />
+              );
             }
           }
           return null;

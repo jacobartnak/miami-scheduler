@@ -11,7 +11,7 @@ const ContentWrapper = styled.div`
     padding: 1rem;
     margin-top: 0.5rem;
     background-color: white;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
     max-height: 40vh;
     overflow-y: scroll;
     scrollbar-width: none;

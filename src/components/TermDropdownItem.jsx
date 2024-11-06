@@ -17,8 +17,9 @@ const ItemWrapper = styled.div`
     padding: 0.5rem;
     margin: 0.1rem;
     width: 100%;
-    border-radius: 0.5rem;
+    border-radius: var(--border-radius);
     cursor: pointer;
+    color: var(--light-black);
   }
 
   &.dropdown-item:hover {

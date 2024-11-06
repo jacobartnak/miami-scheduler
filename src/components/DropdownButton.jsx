@@ -9,8 +9,9 @@ const Btn = styled.div`
   align-items: center;
   padding: 1rem;
   background-color: white;
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
+  color: color: var(--light-black);
   cursor: pointer;
   .toggle-icon {
     display: flex;

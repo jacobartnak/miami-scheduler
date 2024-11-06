@@ -12,19 +12,24 @@ const items = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const SearchContainerWrapper = styled.div`
   padding: 20px; //also adjust calc in course-container
-  height: 420px;
+  height: 440px;
   display: flex;
 
   .right-side {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    flex: 1;
+    height: fit-content;
+    width: 60vw;
+
+    .dropdown-container {
+      display: flex;
+      gap: 5px;
+    }
   }
 
   .left-side {
     height: 100%;
-    flex: 0.8;
+    width: 40vw;
   }
   .term-dropdown {
     height: 12%; //matches with input-container
@@ -37,7 +42,7 @@ export default function Search(props) {
   const { formData, handleChange, handleSubmit, setFormKey } = props;
   const [currentDropdown, setCurrentDropdown] = useState(null);
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -70,32 +75,54 @@ export default function Search(props) {
         {/* Term search box */}
 
         <div className="right-side">
-          <Dropdown
-            className="term-dropdown"
-            buttonText={
-              formData.term === "" ? "Select Term" : "Term " + formData.term
-            }
-            content={items.map((item) => (
-              <TermDropdownItem
-                key={item}
-                termData={{
-                  id: item,
-                  name: item,
-                }}
-                setFormKey={setFormKey}
-              >
-                {`Spring Semester 202${4 - item}-${5 - item}`}
-              </TermDropdownItem>
-            ))}
-          ></Dropdown>
+          <div className="dropdown-container">
+            <Dropdown
+              className="term-dropdown"
+              buttonText={
+                formData.term === "" ? "Select Term" : "Term " + formData.term
+              }
+              content={items.map((item) => (
+                <TermDropdownItem
+                  key={item}
+                  termData={{
+                    id: item,
+                    name: item,
+                  }}
+                  setFormKey={setFormKey}
+                >
+                  {`Spring Semester 202${4 - item}-${5 - item}`}
+                </TermDropdownItem>
+              ))}
+            ></Dropdown>
 
-          <CourseData></CourseData>
+            <Dropdown
+              className="term-dropdown"
+              buttonText={
+                formData.campus === ""
+                  ? "Select Campus"
+                  : "Campus " + formData.term
+              }
+              content={items.map((item) => (
+                <TermDropdownItem
+                  key={item}
+                  termData={{
+                    id: item,
+                    name: item,
+                  }}
+                  setFormKey={setFormKey}
+                >
+                  {`Spring Semester 202${4 - item}-${5 - item}`}
+                </TermDropdownItem>
+              ))}
+            ></Dropdown>
+          </div>
+
+          <CourseData courseData={selectedCourse}></CourseData>
         </div>
 
         {/* Course search box */}
       </SearchContainerWrapper>
 
-      <div>Heoooooooollo</div>
       {/* <Link to="/add" type="button">
         Add Course
       </Link> */}

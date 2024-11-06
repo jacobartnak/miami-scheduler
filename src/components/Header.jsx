@@ -35,12 +35,13 @@ const HeaderWrapper = styled.div`
   }
 
   .header a {
-    color: rgb(0, 0, 0, 0.6);
+    color: var(--light-black);
+    opacity: 0.5;
     height: 100%;
   }
 
   .header a:hover {
-    color: rgb(0, 0, 0, 0.9);
+    opacity: 1;
   }
   .left-navigation a {
     margin-right: 30px;

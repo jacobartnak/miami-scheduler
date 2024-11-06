@@ -12,6 +12,7 @@ function App() {
   const [formData, setFormData] = useState({
     courseName: "",
     term: "",
+    campus: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
