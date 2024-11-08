@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import DropdownButton from "./DropdownButton";
 import DropdownContent from "./DropdownContent";
-import TermOption from "./TermDropdownItem";
+import TermOption from "./DropdownItem";
 import styled from "styled-components";
 
 const Div = styled.div`
   position: relative;
   z-index: 1000;
+  white-space: nowrap;
+  width: fit-content;
 `;
 const Dropdown = ({ buttonText, content, children, className }) => {
   const [open, setOpen] = useState(false);

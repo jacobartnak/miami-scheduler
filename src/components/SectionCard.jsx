@@ -55,12 +55,39 @@ const Wrapper = styled.div`
 
   .crn {
     color: a29c9b;
-    font-weight: 300;
+    font-weight: 200;
   }
 `;
+
+//meetingTimes.length > 1 && meetingTimes.replace("|", " | ")
 const SectionCard = ({ sectionData }) => {
+  let meetingDays = sectionData["Meeting Days"];
+  let meetingTimes = sectionData["Meeting Times"];
+  const instructors = sectionData["Instructors"];
+  let meetingText = [];
+  if (meetingDays === null || meetingTimes.length < 1) {
+    meetingText = ["-"];
+  } else {
+    // meetingTimes = meetingTimes.replace("|", " | ");
+    // meetingDays = meetingDays.replace("|", " | ");
+
+    if (meetingDays.indexOf("|") !== -1) {
+      // Different times on each day
+      // |T|T|T | |6:30pm-8:00pm|6:30pm-8:00pm|6:30pm-8:00pm
+
+      const splitDay = meetingDays.split("|");
+      const splitTimes = meetingTimes.split("|");
+
+      for (let i = 1; i < splitDay.length; i++) {
+        meetingText.push(splitDay[i] + " | " + splitTimes[i]);
+      }
+    } else {
+      //TR | 4:25pm-5:45pm
+      meetingText.push(meetingDays + " | " + meetingTimes);
+    }
+  }
   return (
-    <Wrapper>
+    <Wrapper key={sectionData.CRN}>
       <div className="top">
         <div className="section">{`${sectionData.Section}`}</div>
         <div className="crn">{`${sectionData.CRN}`}</div>
@@ -69,19 +96,23 @@ const SectionCard = ({ sectionData }) => {
 
       <div className="meeting-times">
         <FontAwesomeIcon icon={clock} />
-
-        {sectionData["Meeting Days"] !== null &&
-          sectionData["Meeting Days"] !== "," &&
-          sectionData["Meeting Days"].replace("|", " | ") + " - "}
-
-        {sectionData["Meeting Times"] !== null &&
-          sectionData["Meeting Times"].length > 1 &&
-          sectionData["Meeting Times"].replace("|", " | ")}
+        {meetingText.map((str, index) => {
+          return (
+            <span key={index} className="time-span">
+              {str}
+              {/* <br />  */}
+            </span>
+          );
+        })}
       </div>
 
       <div className="instructors">
         <FontAwesomeIcon icon={user} />
-        <div>{sectionData["Instructors"]}</div>
+        {instructors !== null
+          ? instructors.indexOf(",") !== -1 // Artnak, Jacob
+            ? `${instructors.split(",")[1]} ${instructors.split(",")[0]}` // Jacob, Artnak
+            : instructors // Staff
+          : null}
       </div>
     </Wrapper>
   );

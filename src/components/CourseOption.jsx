@@ -17,12 +17,26 @@ const Wrapper = styled.li`
 
   .text {
     background: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .campus {
+      font-size: 0.6rem;
+      opacity: 0.5;
+    }
   }
 
   .add {
     background: none;
     color: #990100;
     aspect-ratio: 1/1;
+    width: 6%;
+
+    .icon {
+      width: 100%;
+      height: 100%;
+    }
   }
   .add:hover {
     color: #770100;
@@ -33,7 +47,7 @@ const Wrapper = styled.li`
 `;
 
 export default function CourseOption(props) {
-  const { courseData, handleCourseSelect } = props;
+  const { courseData, handleCourseSelect, formData } = props;
 
   if (!courseData) {
     return;
@@ -41,7 +55,17 @@ export default function CourseOption(props) {
   return (
     <Wrapper onClick={() => handleCourseSelect(courseData)}>
       <div className="text">
-        {courseData.Subject + " " + courseData.Number + " " + courseData.Title}
+        <div>
+          {courseData.Subject +
+            " " +
+            courseData.Number +
+            " " +
+            courseData.Title}
+        </div>
+
+        {formData.campus.Name === "All" && courseData.Campus !== "Oxford" && (
+          <div className="campus">{courseData.Campus}</div>
+        )}
       </div>
 
       <button className="add">

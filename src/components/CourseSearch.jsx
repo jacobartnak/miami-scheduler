@@ -1,4 +1,4 @@
-import React from "react";
+import { useRef, forwardRef } from "react";
 import CourseOption from "./CourseOption";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,12 +10,11 @@ const CourseWrapper = styled.div`
   flex-direction: column;
 
   .input-container {
-    height: 14%;
+    flex: 0 0 12%;
     position: relative;
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-
     input {
       font-weight: 100;
     }
@@ -51,7 +50,7 @@ const CourseWrapper = styled.div`
   }
 `;
 
-export const CourseSearch = ({
+const CourseSearch = ({
   formData,
   handleChange,
   courses,
@@ -88,6 +87,11 @@ export const CourseSearch = ({
             let isMatch = false;
 
             if (
+              formData.campus.Name !== "All" &&
+              formData.campus.Name !== courseData.Campus
+            ) {
+              isMatch = false;
+            } else if (
               courseData &&
               courseData.Subject &&
               courseData.Number &&
@@ -114,6 +118,7 @@ export const CourseSearch = ({
                   handleCourseSelect={handleCourseSelect}
                   key={index}
                   courseData={courseData}
+                  formData={formData}
                 />
               );
             }
@@ -124,3 +129,5 @@ export const CourseSearch = ({
     </CourseWrapper>
   );
 };
+
+export default CourseSearch;

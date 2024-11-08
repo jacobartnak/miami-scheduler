@@ -27,14 +27,10 @@ const ItemWrapper = styled.div`
   }
 `;
 
-export default function TermDropdownItem({ termData, setFormKey }) {
+export default function DropdownItem({ itemKey, children, onClick }) {
   return (
-    <ItemWrapper
-      className="dropdown-item"
-      name="term"
-      onClick={() => setFormKey("term", termData.id)}
-    >
-      {"Term " + termData.name}
+    <ItemWrapper className="dropdown-item" onClick={onClick}>
+      {children}
     </ItemWrapper>
   );
 }

@@ -8,11 +8,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import CourseOption from "./components/CourseOption.jsx";
 import AddCourse from "./pages/addcourse/AddCourse.jsx";
 import Header from "./components/Header.jsx";
+import SelectionContainer from "./components/SelectionContainer.jsx";
+
 function App() {
   const [formData, setFormData] = useState({
     courseName: "",
-    term: "",
-    campus: "",
+    term: null,
+    campus: null,
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,6 +53,8 @@ function App() {
             handleChange={handleChange}
             handleSubmit={handleSubmit}
           />
+
+          <SelectionContainer />
         </>
       ),
     },
