@@ -13,16 +13,16 @@ const items = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 const SearchContainerWrapper = styled.div`
   margin: 50px; //also adjust calc in course-container
-  max-height: 550px;
-  min-height: 550px;
+  max-height: 500px;
+  min-height: 500px;
   display: flex;
-  align-items: stretch;
 
   .right-side {
     display: flex;
     flex-direction: column;
-    max-width: 60%;
-    min-width: 60%;
+    flex: 1;
+    max-width: calc(60% - 10px);
+
     .dropdown-container {
       display: flex;
       gap: 5px;
@@ -30,8 +30,9 @@ const SearchContainerWrapper = styled.div`
   }
 
   .left-side {
-    max-width: 40%;
-    min-width: 40%;
+    // max-width: 40%;
+    // min-width: 40%;
+    flex: 0 0 40%;
   }
 
   .term-dropdown {
@@ -61,12 +62,19 @@ const campusValues = {
   Luxembourg: 5,
 };
 export default function Search(props) {
-  const { formData, handleChange, handleSubmit, setFormKey } = props;
+  const {
+    formData,
+    handleChange,
+    handleSubmit,
+    setFormKey,
+    selectedCourse,
+    setSelectedCourse,
+    setSelectionList,
+  } = props;
   const [currentDropdown, setCurrentDropdown] = useState(null);
   const [courses, setCourses] = useState([]);
   const [terms, setTerms] = useState([]);
   const [campuses, setCampuses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
 
   useEffect(() => {
     const fetchCourses = async () => {
@@ -76,6 +84,11 @@ export default function Search(props) {
         );
 
         setCourses(response.data);
+
+        // // Testing
+        // for (let i = 0; i < 2; i++) {
+        //   addCourse(response.data[i]);
+        // }
       } catch (error) {
         console.log("Error while fetching courses: ", error);
       }
@@ -157,6 +170,23 @@ export default function Search(props) {
     fetchCourses();
   }, []);
 
+  const addCourse = (courseToAdd) => {
+    setSelectionList((prevData) => {
+      // Make sure course is only added once
+      let isValid = true;
+      prevData.forEach((item) => {
+        if (item._id == courseToAdd._id) {
+          isValid = false;
+        }
+      });
+
+      if (isValid) {
+        return [...prevData, courseToAdd];
+      } else {
+        return prevData;
+      }
+    });
+  };
   console.log("Rendered");
 
   return (
@@ -194,7 +224,7 @@ export default function Search(props) {
             ></Dropdown>
 
             <Dropdown
-              className="campu-dropdown"
+              className="campus-dropdown"
               buttonText={
                 formData.campus === null
                   ? "Select Campus"
@@ -211,7 +241,10 @@ export default function Search(props) {
             ></Dropdown>
           </div>
 
-          <CourseData courseData={selectedCourse}></CourseData>
+          <CourseData
+            courseData={selectedCourse}
+            addCourse={addCourse}
+          ></CourseData>
         </div>
 
         {/* Course search box */}

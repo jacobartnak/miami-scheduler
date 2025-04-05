@@ -25,6 +25,7 @@ const HeaderWrapper = styled.div`
   .miami-logo {
     margin-right: 20px;
     height: 100%;
+    object-fit: contain;
   }
 
   .navigation {

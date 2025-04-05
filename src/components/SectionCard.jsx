@@ -9,7 +9,7 @@ import {
 
 const Wrapper = styled.div`
   flex: 0 0 30%;
-  //width: fit-content;
+  max-width: fit-content;
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   padding: 6px;

@@ -59,7 +59,6 @@ const CourseSearch = ({
 }) => {
   const handleCourseSelect = (data) => {
     setSelectedCourse(() => {
-      console.log(data);
       setSelectedCourse(data);
     });
   };

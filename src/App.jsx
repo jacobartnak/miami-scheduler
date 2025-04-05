@@ -9,8 +9,16 @@ import CourseOption from "./components/CourseOption.jsx";
 import AddCourse from "./pages/addcourse/AddCourse.jsx";
 import Header from "./components/Header.jsx";
 import SelectionContainer from "./components/SelectionContainer.jsx";
+import Schedule from "./components/Schedule.jsx";
+import { generate } from "./utils/scheduleGenerator.js";
+import ScheduleFunctions from "./components/ScheduleFunctions.jsx";
 
 function App() {
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectionList, setSelectionList] = useState([]);
+  const [schedules, setSchedules] = useState([]);
+  const [currentSchedule, setCurrentSchedule] = useState(0);
+
   const [formData, setFormData] = useState({
     courseName: "",
     term: null,
@@ -39,7 +47,10 @@ function App() {
     console.log(formData);
   };
 
-  useEffect(() => {}, [formData]);
+  useEffect(() => {
+    setSchedules(generate(selectionList));
+  }, [selectionList]);
+
   const route = createBrowserRouter([
     {
       path: "/",
@@ -52,9 +63,18 @@ function App() {
             setFormKey={setFormKey}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
+            selectedCourse={selectedCourse}
+            setSelectedCourse={setSelectedCourse}
+            setSelectionList={setSelectionList}
           />
 
-          <SelectionContainer />
+          <SelectionContainer selectionList={selectionList} />
+
+          <ScheduleFunctions
+            currentSchedule={currentSchedule}
+            setCurrentSchedule={setCurrentSchedule}
+          />
+          <Schedule schedule={schedules[currentSchedule]} />
         </>
       ),
     },

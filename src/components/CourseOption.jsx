@@ -68,9 +68,9 @@ export default function CourseOption(props) {
         )}
       </div>
 
-      <button className="add">
+      {/* <button className="add">
         <FontAwesomeIcon className="icon" icon={plus} />
-      </button>
+      </button> */}
     </Wrapper>
   );
 }

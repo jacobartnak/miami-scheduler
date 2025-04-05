@@ -7,12 +7,13 @@ import { faPlusCircle as plus } from "@fortawesome/free-solid-svg-icons";
 const Wrapper = styled.div`
   background-color: #f6f6f6;
   color: var(--dark-black);
-  width: 100%;
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   padding: 15px;
-  display: flex;
+  //display: flex;
   flex-direction: column;
+  overflow-y: scroll;
+  //height: fit-content;
 
   .top-data {
     display: flex;
@@ -41,13 +42,13 @@ const Wrapper = styled.div`
 
   .sections-container {
     padding: 5px;
-    flex: 1;
     display: flex;
     align-items: center;
     gap: 10px;
-    overflow-x: auto;
-    width: 100%;
     margin-bottom: 5px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .bottom {
@@ -74,7 +75,7 @@ const Wrapper = styled.div`
     }
   }
 `;
-const CourseData = ({ courseData }) => {
+const CourseData = ({ courseData, addCourse }) => {
   if (!courseData) return null;
   const sections = courseData.Sections;
 
@@ -99,6 +100,7 @@ const CourseData = ({ courseData }) => {
   if (description.indexOf("Prerequisite"))
     description = description.split("Prerequisite")[0];
 
+  //description = description.replace("\\n", "");
   return (
     <Wrapper className="course-data">
       <>
@@ -122,7 +124,7 @@ const CourseData = ({ courseData }) => {
         </div>
 
         <div className="bottom">
-          <button className="add">
+          <button className="add" onClick={() => addCourse(courseData)}>
             <FontAwesomeIcon className="icon" icon={plus} />
             <div>Add</div>
           </button>
