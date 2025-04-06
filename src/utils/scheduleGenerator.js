@@ -59,11 +59,11 @@ const isValidSchedule = (schedule) => {
 
       // Check for time overlap
       // let overlaps =
-      //   (otherStart >= start && otherStart <= end) ||
-      //   (otherEnd >= start && otherEnd <= end) ||
-      //   (otherStart <= start && otherEnd >= end); // covers full overlap
+      const overlaps =
+        (otherStart >= start && otherStart < end) ||
+        (otherEnd > start && otherEnd <= end) ||
+        (otherStart <= start && otherEnd >= end); // covers full overlap
 
-      const overlaps = !(otherEnd <= start || otherStart >= end);
       if (overlaps) {
         return false; // early exit on first conflict
       }

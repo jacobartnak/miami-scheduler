@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import miamiLogo from "../assets/miami-logo.png";
+import quote from "../assets/quote.png";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -23,9 +24,15 @@ const HeaderWrapper = styled.div`
     padding: 8px 20px 8px 0px;
   }
   .miami-logo {
-    margin-right: 20px;
+    margin-right: 30px;
     height: 100%;
     object-fit: contain;
+  }
+
+  .header-quote {
+    height: 80%;
+    margin-top: 5px;
+    color: black;
   }
 
   .navigation {
@@ -58,12 +65,13 @@ const Header = () => {
     <HeaderWrapper>
       <div className="header left-header">
         <img src={miamiLogo} alt="Miami Logo" className="miami-logo" />
+        <img src={quote} alt="Quote" className="header-quote" />
 
         <ul className="navigation left-navigation">
           <li>
-            <a>Scheduler</a>
+            {/* <a>Scheduler</a>
             <a>Seat Notifier</a>
-            <a>Automatic Registration</a>
+            <a>Automatic Registration</a> */}
           </li>
         </ul>
       </div>

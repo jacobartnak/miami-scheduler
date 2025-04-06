@@ -10,10 +10,8 @@ const Wrapper = styled.div`
   box-shadow: var(--box-shadow);
   border-radius: var(--border-radius);
   padding: 15px;
-  //display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  //height: fit-content;
 
   .top-data {
     display: flex;

@@ -1,34 +1,28 @@
 import React from "react";
 import styled from "styled-components";
+import colors from "../constants/colors";
 
-const colors = [
-  "#ffadad",
-  "#ffd6a5",
-  "#fdffb6",
-  "#caffbf",
-  "#9bf6ff",
-  "#a0c4ff",
-  "#bdb2ff",
-  "#ffc6ff",
-];
 const Wrapper = styled.div`
   background-color: #d6d5c9;
   padding: 10px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   color: var(--light-black);
-  //height: fit-content;
+  height: 100%;
 
   .top {
     display: flex;
     align-items: center;
     justify-content: space-between;
     .sub {
+      width: 100%;
       display: flex;
       align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
 
       .campus {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         font-weight: 200;
       }
       .subject {
@@ -45,6 +39,7 @@ const Wrapper = styled.div`
   }
 
   .title {
+    font-size: 0.8rem;
   }
 
   &:hover {
@@ -52,11 +47,14 @@ const Wrapper = styled.div`
   }
 `;
 
-const CourseSelection = ({ courseData, index }) => {
+const CourseSelection = ({ courseData, index, onClick }) => {
   const sections = courseData.Sections.length;
 
   return (
-    <Wrapper style={{ backgroundColor: colors[index % colors.length] }}>
+    <Wrapper
+      style={{ backgroundColor: colors[index % colors.length] }}
+      onClick={() => onClick(courseData.Subject + courseData.Number)}
+    >
       <div className="top">
         <div className="sub">
           <div className="subject">
@@ -66,9 +64,9 @@ const CourseSelection = ({ courseData, index }) => {
           <div className="campus">{courseData.Campus}</div>
         </div>
 
-        <div className="sections">
+        {/* <div className="sections">
           {sections} {(sections == 1 && "section") || "sections"}{" "}
-        </div>
+        </div> */}
       </div>
 
       <div className="title">{courseData.Title}</div>

@@ -6,7 +6,7 @@ const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const day_values = ["M", "T", "W", "R", "F"];
 const times = [];
 
-for (let i = 7; i <= 20; i++) {
+for (let i = 7; i <= 17; i++) {
   let formatted = i;
 
   if (i < 12) {
@@ -22,12 +22,16 @@ for (let i = 7; i <= 20; i++) {
 }
 const Wrapper = styled.div`
   margin: 0px auto 0px auto;
-  border: 1px solid rgb(0, 0, 0, 0.8);
+  border: 1px solid rgb(0, 0, 0, 0.3);
   display: flex;
-
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  color: rgb(0, 0, 1, 0.5);
+  padding: 10px;
   width: 80%;
+  height: 100vh;
   aspect-ratio: 1 / 1;
-  overflow: hidden;
+  overflow-y: auto;
 
   .times {
     margin-top: 100px;
@@ -64,7 +68,8 @@ const Wrapper = styled.div`
 
       .day-label {
         text-align: center;
-        margin-bottom: 75px;
+        margin-bottom: 60px;
+        padding-top: 15px;
       }
 
       .bottom {
@@ -94,9 +99,12 @@ const minTime = convertToMinutes(times[0]);
 const maxTime = convertToMinutes(times[times.length - 1]);
 const oneHourScale = 100 / times.length;
 
-const Schedule = ({ schedule }) => {
-  if (!schedule) return;
+const Schedule = ({ schedule, selectionList }) => {
+  const colorIndexes = {};
 
+  selectionList.forEach((courseData, index) => {
+    colorIndexes[courseData.Subject + courseData.Number] = index;
+  });
   return (
     <Wrapper>
       <div className="times">
@@ -120,30 +128,34 @@ const Schedule = ({ schedule }) => {
                   })}
                 </div>
 
-                {schedule.map((section, sectionIndex) => {
-                  // M, T, W, R, F
-                  const day_value = day_values[dayIndex];
+                {schedule != null &&
+                  schedule.map((section, sectionIndex) => {
+                    // M, T, W, R, F
+                    const day_value = day_values[dayIndex];
 
-                  // Make sure day is valid
-                  if (section["Meeting Days"].indexOf(day_value) == -1)
-                    return null;
+                    // Make sure day is valid
+                    if (section["Meeting Days"].indexOf(day_value) == -1)
+                      return null;
 
-                  // Converting to military hours
+                    // Converting to military hours
 
-                  const [start, end] = getTimes(section["Meeting Times"]);
-                  const durationInHours = (end - start) / 60; // total duration of class
-                  const top = ((start - minTime) / 60) * oneHourScale; // getting class start
-                  const height = durationInHours * oneHourScale;
+                    const [start, end] = getTimes(section["Meeting Times"]);
+                    const durationInHours = (end - start) / 60; // total duration of class
+                    const top = ((start - minTime) / 60) * oneHourScale; // getting class start
+                    const height = durationInHours * oneHourScale;
 
-                  return (
-                    <ScheduleSlot
-                      key={sectionIndex}
-                      section={section}
-                      top={`${top}%`}
-                      height={`${height}%`}
-                    />
-                  );
-                })}
+                    return (
+                      <ScheduleSlot
+                        key={sectionIndex}
+                        section={section}
+                        top={`${top}%`}
+                        height={`${height}%`}
+                        colorIndex={
+                          colorIndexes[section.Subject + section.Number]
+                        }
+                      />
+                    );
+                  })}
               </div>
             </div>
           );

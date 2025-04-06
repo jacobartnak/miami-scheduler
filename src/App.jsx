@@ -48,6 +48,7 @@ function App() {
   };
 
   useEffect(() => {
+    setCurrentSchedule(0);
     setSchedules(generate(selectionList));
   }, [selectionList]);
 
@@ -68,13 +69,20 @@ function App() {
             setSelectionList={setSelectionList}
           />
 
-          <SelectionContainer selectionList={selectionList} />
+          <SelectionContainer
+            selectionList={selectionList}
+            setSelectionList={setSelectionList}
+          />
 
           <ScheduleFunctions
             currentSchedule={currentSchedule}
+            schedules={schedules}
             setCurrentSchedule={setCurrentSchedule}
           />
-          <Schedule schedule={schedules[currentSchedule]} />
+          <Schedule
+            schedule={schedules[currentSchedule]}
+            selectionList={selectionList}
+          />
         </>
       ),
     },

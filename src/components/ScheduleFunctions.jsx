@@ -7,15 +7,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Wrapper = styled.div`
-  margin: 10px 200px;
+  width: 80%;
+  margin: 0px auto 0px auto;
   display: flex;
+  margin-bottom: 8px;
   justify-content: end;
 
   .schedule-incrementer {
-    width: 20%;
+    width: 15%;
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius);
-    height: 70px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,9 +29,13 @@ const Wrapper = styled.div`
     }
 
     .index {
-      flex: 1;
-      height: 100%;
-      align-text: center;
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 300;
     }
     .right {
       flex: 1;
@@ -37,11 +43,21 @@ const Wrapper = styled.div`
     }
   }
 `;
-const ScheduleFunctions = ({ currentSchedule, setCurrentSchedule }) => {
+const ScheduleFunctions = ({
+  currentSchedule,
+  setCurrentSchedule,
+  schedules,
+}) => {
   const clickHandler = (e) => {
     if (!e.target || e.target.name === "") return;
+
+    const num = Number(e.currentTarget.name);
+    if (isNaN(num)) return;
+
     setCurrentSchedule((prevData) => {
-      return (prevData += Number(e.target.name));
+      if (prevData + num < 0 || prevData + num >= schedules.length)
+        return prevData;
+      return (prevData += num);
     });
   };
   return (
@@ -50,7 +66,9 @@ const ScheduleFunctions = ({ currentSchedule, setCurrentSchedule }) => {
         <button className="left" name="-1" onClick={clickHandler}>
           <FontAwesomeIcon icon={faChevronLeft} />
         </button>
-        <div className="index">{currentSchedule + 1}</div>
+        <div className="index">{`${currentSchedule + 1} of ${
+          schedules.length
+        }`}</div>
         <button className="right" name="1" onClick={clickHandler}>
           <FontAwesomeIcon icon={faChevronRight} />
         </button>
