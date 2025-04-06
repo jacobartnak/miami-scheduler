@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   white-space: nowrap;
+  overflow-x: auto;
 
   .top {
     display: flex;
@@ -65,11 +66,23 @@ const SectionCard = ({ sectionData }) => {
   let meetingTimes = sectionData["Meeting Times"];
   const instructors = sectionData["Instructors"];
   let meetingText = [];
-  if (meetingDays === null || meetingTimes.length < 1) {
+  if (meetingTimes === "") {
     meetingText = ["-"];
   } else {
     // meetingTimes = meetingTimes.replace("|", " | ");
     // meetingDays = meetingDays.replace("|", " | ");
+
+    // Meeting Days "F|M"
+    // Meeting Times "11:40am-1:00pm|11:40am-1:00pm"
+    // Meeting Locations "BEN 001|BEN 207"
+
+    // Meeting Days "MW"
+    // Meeting Times "2:15pm-4:05pm"
+    // Meeting Locations "BEN 009"
+
+    // Meeting Day "|T|T|T|T"
+    // Meeting Times "|6:30pm-8:00pm|6:30pm-8:00pm|6:30pm-8:00pm|6:30pm-8:00pm"
+    // Meeting Locations "WEB |IRV 224|IRV 224|IRV 224|IRV 224"
 
     if (meetingDays.indexOf("|") !== -1) {
       // Different times on each day
@@ -78,12 +91,12 @@ const SectionCard = ({ sectionData }) => {
       const splitDay = meetingDays.split("|");
       const splitTimes = meetingTimes.split("|");
 
-      for (let i = 1; i < splitDay.length; i++) {
-        meetingText.push(splitDay[i] + " | " + splitTimes[i]);
+      for (let i = 0; i < splitDay.length; i++) {
+        meetingText.push(splitDay[i] + ", " + splitTimes[i]);
       }
     } else {
       //TR | 4:25pm-5:45pm
-      meetingText.push(meetingDays + " | " + meetingTimes);
+      meetingText.push(meetingDays + ", " + meetingTimes);
     }
   }
   return (

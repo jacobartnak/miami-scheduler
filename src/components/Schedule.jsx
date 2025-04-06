@@ -1,12 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import ScheduleSlot from "./ScheduleSlot";
-import { convertToMinutes, getTimes } from "../utils/timeUtils";
+import {
+  convertToMinutes,
+  getTimes,
+  getDayIndex,
+  getCorrespondingTime,
+} from "../utils/timeUtils";
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const day_values = ["M", "T", "W", "R", "F"];
 const times = [];
 
-for (let i = 7; i <= 17; i++) {
+for (let i = 7; i <= 24; i++) {
   let formatted = i;
 
   if (i < 12) {
@@ -28,12 +33,13 @@ const Wrapper = styled.div`
   box-shadow: var(--box-shadow);
   color: rgb(0, 0, 1, 0.5);
   padding: 10px;
-  width: 80%;
-  height: 100vh;
+  width: 70%;
+  height: 80vh;
   aspect-ratio: 1 / 1;
   overflow-y: auto;
 
   .times {
+    height: 1000px;
     margin-top: 100px;
     flex: 0 0 10%;
     display: flex;
@@ -54,6 +60,7 @@ const Wrapper = styled.div`
     }
   }
   .days {
+    height: 1100px;
     flex: 1;
     display: flex;
     justify-content: space-around;
@@ -78,12 +85,13 @@ const Wrapper = styled.div`
         flex-direction: column;
         justify-content: space-between;
         position: relative;
-        height: 100%;
+
         .time-slots {
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: flex-start;
+
           .time-slot {
             flex: 1;
             border-top: 1px solid rgb(0, 0, 0, 0.1);
@@ -132,14 +140,36 @@ const Schedule = ({ schedule, selectionList }) => {
                   schedule.map((section, sectionIndex) => {
                     // M, T, W, R, F
                     const day_value = day_values[dayIndex];
+                    const meetingDays = section["Meeting Days"];
+                    const meetingTimes = section["Meeting Times"];
 
                     // Make sure day is valid
-                    if (section["Meeting Days"].indexOf(day_value) == -1)
-                      return null;
+                    if (!meetingDays.includes(day_value)) return;
 
                     // Converting to military hours
 
-                    const [start, end] = getTimes(section["Meeting Times"]);
+                    // if we are on W, and days = "M|W", this returns 1
+                    const correspondingDayIndex = getDayIndex(
+                      meetingDays,
+                      day_value
+                    );
+
+                    // get the correct time for the correct day
+                    const correspondingTime = getCorrespondingTime(
+                      meetingTimes,
+                      correspondingDayIndex
+                    );
+
+                    const correspondingLocation = getCorrespondingTime(
+                      section["Meeting Locations"],
+                      correspondingDayIndex
+                    );
+
+                    // get start and end times for correct day
+                    const [start, end] = getTimes(
+                      meetingTimes,
+                      correspondingDayIndex
+                    );
                     const durationInHours = (end - start) / 60; // total duration of class
                     const top = ((start - minTime) / 60) * oneHourScale; // getting class start
                     const height = durationInHours * oneHourScale;
@@ -153,6 +183,8 @@ const Schedule = ({ schedule, selectionList }) => {
                         colorIndex={
                           colorIndexes[section.Subject + section.Number]
                         }
+                        meetingTime={correspondingTime}
+                        location={correspondingLocation}
                       />
                     );
                   })}

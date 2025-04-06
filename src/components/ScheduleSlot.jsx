@@ -13,30 +13,45 @@ const Wrapper = styled.div`
   padding: 5px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-
+  overflow: scroll;
   .slot-subject {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
   }
 
   .slot-times,
-  .slot-location {
-    color: rgb(0, 0, 1, 0.5);
+  .slot-location,
+  .slot-professor {
+    color: rgb(120, 120, 120);
+    font-size: 0.7rem;
   }
   > :last-child {
     margin-top: auto;
   }
 `;
-const ScheduleSlot = ({ section, top, height, colorIndex }) => {
+const ScheduleSlot = ({
+  section,
+  top,
+  height,
+  colorIndex,
+  meetingTime,
+  location,
+}) => {
   return (
     <Wrapper
       style={{ top: top, height: height, backgroundColor: colors[colorIndex] }}
     >
       <div className="slot-subject">
-        {section.Subject + " " + section.Number}
+        {`${section.Subject} ${section.Number}${section.Section.trim()}`}
       </div>
-      <div className="slot-times">{section["Meeting Times"]}</div>
-      <div className="slot-location">{section["Meeting Locations"]}</div>
+      <div className="slot-times">
+        <div>{meetingTime.replace("-", " - ")}</div>
+      </div>
+
+      <div>
+        <div className="slot-location">{location}</div>
+        <div className="slot-professor">{section["Instructors"]}</div>
+      </div>
     </Wrapper>
   );
 };

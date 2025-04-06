@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Wrapper = styled.div`
-  width: 80%;
+  width: 70%;
   margin: 0px auto 0px auto;
   display: flex;
   margin-bottom: 8px;

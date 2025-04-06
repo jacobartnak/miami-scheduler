@@ -58,9 +58,7 @@ const CourseSearch = ({
   setSelectedCourse,
 }) => {
   const handleCourseSelect = (data) => {
-    setSelectedCourse(() => {
-      setSelectedCourse(data);
-    });
+    setSelectedCourse(data);
   };
 
   return (

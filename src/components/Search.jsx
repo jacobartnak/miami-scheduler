@@ -83,6 +83,47 @@ export default function Search(props) {
           "http://localhost:8000/api/courses/getAllCourses"
         );
 
+        response.data.forEach((courseData, index) => {
+          courseData.Sections.forEach((sectionData) => {
+            let meetingDays = (sectionData["Meeting Days"] || "").trim();
+            let meetingTimes = (sectionData["Meeting Times"] || "").trim();
+            let meetingLocations = (
+              sectionData["Meeting Locations"] || ""
+            ).trim();
+
+            // Remove leading "|"
+            if (meetingDays.startsWith("|")) {
+              meetingDays = meetingDays.slice(1);
+            }
+            if (meetingTimes.startsWith("|")) {
+              meetingTimes = meetingTimes.slice(1);
+            }
+            if (meetingLocations.startsWith("|")) {
+              meetingLocations = meetingLocations.slice(1);
+            }
+
+            // Change TR to R, standardized for Thursday, account for TR and TTR
+            // MUS 100B
+            // if (meetingDays.includes("TR")) {
+            //   meetingDays.replace("TR", "R");
+            // }
+
+            sectionData["Meeting Days"] = meetingDays;
+            sectionData["Meeting Times"] = meetingTimes;
+          });
+
+          // For testing for no errors
+          // const wait = (ms) =>
+          //   new Promise((resolve) => setTimeout(resolve, ms));
+
+          // const run = async () => {
+          //   await wait(index * 10); // waits 2 seconds
+          //   setSelectedCourse(courseData);
+          // };
+
+          //run();
+        });
+
         setCourses(response.data);
 
         // // Testing

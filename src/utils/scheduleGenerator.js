@@ -1,31 +1,11 @@
-import { convertToMinutes, getTimes, getMeetingDays } from "./timeUtils.js";
-
-const sample = [
-  [
-    {
-      Subject: "TST",
-      Number: "131",
-      Location: "UPH 100",
-      "Meeting Days": "R",
-      "Meeting Times": "5:00pm-8:00pm",
-    },
-
-    {
-      Subject: "LOL",
-      Number: "131",
-      Location: "UPH 100",
-      "Meeting Days": "M",
-      "Meeting Times": "4:30pm-5:30pm",
-    },
-    {
-      Subject: "LOL",
-      Number: "131",
-      Location: "UPH 100",
-      "Meeting Days": "M",
-      "Meeting Times": "6:30pm-9:30pm",
-    },
-  ],
-];
+import {
+  convertToMinutes,
+  getTimes,
+  getMeetingDays,
+  getDayIndex,
+  getCorrespondingTime,
+  timeRangesOverlap,
+} from "./timeUtils.js";
 
 const isValidSchedule = (schedule) => {
   for (const section of schedule) {
@@ -34,38 +14,44 @@ const isValidSchedule = (schedule) => {
       continue;
     }
 
-    const [rawStart, rawEnd] = getTimes(section["Meeting Times"]);
-    const start = convertToMinutes(rawStart);
-    const end = convertToMinutes(rawEnd);
-    const meetingDays = getMeetingDays(section["Meeting Days"]);
+    const timesArray = section["Meeting Times"].split("|");
+    const meetingDaysArr = getMeetingDays(section["Meeting Days"]);
 
     for (const otherSection of schedule) {
-      if (section._id === otherSection._id) continue;
-
+      if (section._id === otherSection._id) continue; // Don't compare same section
       if (!otherSection["Meeting Times"] || !otherSection["Meeting Days"]) {
         continue;
       }
 
-      const [otherRawStart, otherRawEnd] = getTimes(
-        otherSection["Meeting Times"]
-      );
-      const otherStart = convertToMinutes(otherRawStart);
-      const otherEnd = convertToMinutes(otherRawEnd);
-      const otherMeetingDays = getMeetingDays(otherSection["Meeting Days"]);
+      // "M", "T", "W"
+      const otherTimesArray = otherSection["Meeting Times"].split("|");
+      const otherMeetingDaysArr = getMeetingDays(otherSection["Meeting Days"]);
 
       // Check for any overlapping meeting days
-      const sameDay = meetingDays.some((day) => otherMeetingDays.includes(day));
-      if (!sameDay) continue;
+      const overlappingDays = otherMeetingDaysArr.filter((dayValue) =>
+        meetingDaysArr.includes(dayValue)
+      );
+      if (overlappingDays.length === 0) continue; // skip sections that don't overlap on same day
 
-      // Check for time overlap
-      // let overlaps =
-      const overlaps =
-        (otherStart >= start && otherStart < end) ||
-        (otherEnd > start && otherEnd <= end) ||
-        (otherStart <= start && otherEnd >= end); // covers full overlap
+      for (const day of overlappingDays) {
+        // Get the correct time on the given day
+        const timeStr = getCorrespondingTime(
+          section["Meeting Times"],
+          getDayIndex(section["Meeting Days"], day)
+        );
+        const otherTimeStr = getCorrespondingTime(
+          otherSection["Meeting Times"],
+          getDayIndex(otherSection["Meeting Days"], day)
+        );
 
-      if (overlaps) {
-        return false; // early exit on first conflict
+        const [start, end] = getTimes(timeStr, 0);
+        const [otherStart, otherEnd] = getTimes(otherTimeStr, 0);
+
+        // Check for time overlap
+        const overlaps = timeRangesOverlap(start, end, otherStart, otherEnd);
+        if (overlaps) {
+          return false; // early exit on first conflict
+        }
       }
     }
   }
@@ -86,7 +72,7 @@ class TreeNode {
 
 // Recursively build the all posssible schedule tree
 const buildTree = (index, trees, selectionList, parentNode) => {
-  if (index == selectionList.length) return; // Base case, reached the end of courses
+  if (index === selectionList.length) return; // Base case, reached the end of courses
 
   let courseData = selectionList[index];
 
@@ -113,7 +99,7 @@ const buildTree = (index, trees, selectionList, parentNode) => {
 const buildSchedule = (node, schedule, schedules) => {
   schedule.push(node.value);
 
-  if (node.children.length == 0) {
+  if (node.children.length === 0) {
     schedules.push(schedule);
     return;
   }
@@ -139,8 +125,6 @@ export const generate = (selectionList) => {
       }
     });
   });
-
-  console.log(schedules);
 
   return schedules;
 };

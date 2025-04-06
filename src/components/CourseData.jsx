@@ -75,7 +75,7 @@ const Wrapper = styled.div`
 `;
 const CourseData = ({ courseData, addCourse }) => {
   if (!courseData) return null;
-  const sections = courseData.Sections;
+  const sections = courseData.Sections || [];
 
   const compareFn = (a, b) => {
     //a = a.Section.substring(1, a.Section.length);
@@ -92,10 +92,10 @@ const CourseData = ({ courseData, addCourse }) => {
 
   sections.sort(compareFn);
 
-  let description = courseData.Description;
+  let description = courseData.Description || "";
 
-  if (description.indexOf(")")) description = description.split(")")[1];
-  if (description.indexOf("Prerequisite"))
+  if (description.indexOf(")") !== -1) description = description.split(")")[1];
+  if (description.indexOf("Prerequisite") !== -1)
     description = description.split("Prerequisite")[0];
 
   //description = description.replace("\\n", "");

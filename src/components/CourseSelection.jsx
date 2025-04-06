@@ -8,7 +8,8 @@ const Wrapper = styled.div`
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   color: var(--light-black);
-  height: 100%;
+  height: 80px;
+  overflow: scroll;
 
   .top {
     display: flex;
@@ -40,6 +41,7 @@ const Wrapper = styled.div`
 
   .title {
     font-size: 0.8rem;
+    white-space: nowrap;
   }
 
   &:hover {
