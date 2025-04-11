@@ -9,6 +9,7 @@ import courseRoute from "./routes/courseRoute.js";
 import termRoute from "./routes/termRoute.js";
 import campusRoute from "./routes/campusRoute.js";
 import cors from "cors";
+import { startCronJobs } from "./services/cronService.js";
 
 dotenv.config();
 
@@ -24,6 +25,24 @@ mongoose
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
+    // Handle connection events
+    mongoose.connection.on("error", (err) => {
+      console.error("MongoDB connection error:", err);
+    });
+
+    mongoose.connection.on("disconnected", () => {
+      console.warn("MongoDB disconnected");
+    });
+
+    // Graceful shutdown
+    process.on("SIGINT", async () => {
+      await mongoose.connection.close();
+      console.log("MongoDB connection closed through app termination");
+      process.exit(0);
+    });
+
+    // Start cron jobs after database connects
+    startCronJobs();
   })
   .catch((err) => console.error("MongoDB connection error:", err));
 

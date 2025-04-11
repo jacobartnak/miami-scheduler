@@ -1,8 +1,17 @@
 import mongoose from "mongoose";
 
-const Schema = new mongoose.Schema({
-  Id: String,
-  Name: String,
-});
+const Schema = new mongoose.Schema(
+  {
+    Id: {
+      type: String,
+      required: true,
+    },
+    Name: {
+      type: String,
+      required: true,
+    },
+  },
+  { collection: "campuses" }
+);
 
-export default mongoose.model("campuses", Schema);
+export default mongoose.model("Campus", Schema);

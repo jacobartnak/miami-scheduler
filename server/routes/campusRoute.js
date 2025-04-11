@@ -1,6 +1,6 @@
 import express from "express";
-import { get } from "../controller/campusController.js";
+import { getAllCampuses } from "../controller/campusController.js";
 
-const route = express.Router();
-route.get("/getAll", get);
-export default route;
+const router = express.Router();
+router.get("/getAll", getAllCampuses);
+export default router;

@@ -1,24 +1,44 @@
 // Define your schemas and models
 import mongoose from "mongoose";
 
-const CourseSchema = new mongoose.Schema({
-  Term: String,
-  Subject: String,
-  Number: String,
-  Title: String,
-  "Credit Hours": String,
-  Description: String,
-  Sections: [
-    {
-      CRN: String,
-      Section: String,
-      Campus: String,
-      "Meeting Days": String,
-      "Meeting Times": String,
-      "Meeting Locations": String,
-      Instructors: String,
-    },
-  ],
+const sectionSchema = new mongoose.Schema({
+  CRN: {
+    type: String,
+    required: true,
+  },
+  Section: String,
+  "Meeting Days": String,
+  "Meeting Times": String,
+  "Meeting Locations": String,
+  Instructors: String,
+  MaxSeats: Number,
+  AvailableSeats: Number,
 });
 
-export default mongoose.model("courses", CourseSchema);
+const courseSchema = new mongoose.Schema(
+  {
+    Term: {
+      type: String,
+      required: true,
+    },
+    Subject: {
+      type: String,
+      required: true,
+    },
+    Number: {
+      type: String,
+      required: true,
+    },
+    Title: String,
+    Campus: String,
+    "Credit Hours": Number,
+    Description: String,
+    Sections: [sectionSchema],
+  },
+  {
+    timestamps: true,
+    indexes: [{ Term: 1, Subject: 1, Number: 1, Campus: 1 }],
+  }
+);
+
+export default mongoose.model("Course", courseSchema);

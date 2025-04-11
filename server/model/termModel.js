@@ -1,8 +1,15 @@
 import mongoose from "mongoose";
 
-const TermSchema = new mongoose.Schema({
-  Id: String,
-  Name: String,
+const termSchema = new mongoose.Schema({
+  Id: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  Name: {
+    type: String,
+    required: true,
+  },
 });
 
-export default mongoose.model("terms", TermSchema);
+export default mongoose.model("Term", termSchema);

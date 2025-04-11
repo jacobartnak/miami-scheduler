@@ -1,15 +1,20 @@
 import Campus from "../model/campusModel.js";
 
-export const get = async (req, res) => {
+export const getAllCampuses = async (req, res) => {
   try {
-    const campuses = await Campus.find({});
-    if (campuses.length === 0) {
-      // 0 courses
-      return res.status(404).json({ message: "Campuses Not Found" });
-    }
-
+    const campuses = await Campus.find();
     res.status(200).json(campuses);
-  } catch {
-    res.status(500).json({ message: "Interal server error" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const createCampus = async (req, res) => {
+  try {
+    const campus = new Campus(req.body);
+    await campus.save();
+    res.status(201).json(campus);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
